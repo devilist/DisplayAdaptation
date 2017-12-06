@@ -27,7 +27,10 @@ public class MainActivity extends AppCompatActivity {
             file.delete();
         file = new File(file_path + file_name);
 
-        float ratio = 360 / targetWidth * 2;
+        // 375单位等价于360dp(屏幕宽度)。
+        // 因此，在尺寸750*1334的尺寸上，量的的宽度除以2，就转换为dp了。
+        // 例如 设计尺寸为100px，实际对应的dp为 50px对应的值
+        float ratio = 360 * 2 / targetWidth;
         int end_sp = 50;
         int end_dp = (int) (720 / ratio) + 1;
 
@@ -41,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
             // sp
             for (int k = 6; k <= end_sp; k++) {
                 BigDecimal shift = BigDecimal.valueOf(k * ratio);
-                shift = shift.setScale(2, BigDecimal.ROUND_HALF_UP);
+                shift = shift.setScale(2, BigDecimal.ROUND_HALF_UP); // 保留两位
                 String str = "\n" + "    <dimen name=" + "\"sp_" + k + "\">" + shift + "sp</dimen>";
                 if (k == end_sp)
                     str += "\n";
@@ -53,7 +56,10 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i <= end_dp; i++) {
                 BigDecimal shift = BigDecimal.valueOf(i == 0 ? 0.5 * ratio : i * ratio);
                 shift = shift.setScale(2, BigDecimal.ROUND_HALF_UP);
-                String str = "\n" + "    <dimen name=" + "\"dp_" + (i == 0 ? 0.5 : i) + "\">" + shift + "dp</dimen>";
+                String str;
+                if (i == 0)
+                    str = "\n" + "    <dimen name=" + "\"dp_" + 0.5 + "\">" + shift + "dp</dimen>";
+                else str = "\n" + "    <dimen name=" + "\"dp_" + i + "\">" + shift + "dp</dimen>";
                 if (i == end_dp)
                     str = str + "\n" + "</resources>";
                 raf.seek(file.length());

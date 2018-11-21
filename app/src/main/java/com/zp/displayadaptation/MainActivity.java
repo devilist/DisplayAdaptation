@@ -1,9 +1,12 @@
 package com.zp.displayadaptation;
 
+import android.content.Context;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.WindowManager;
+import android.widget.ImageView;
 
 import java.io.File;
 import java.io.RandomAccessFile;
@@ -16,7 +19,34 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        createDefaultDimens(750);
+
+        Log.e("MainActivity", "density " + getResources().getDisplayMetrics().density);
+        Log.e("MainActivity", "densityDpi " + getResources().getDisplayMetrics().densityDpi);
+        Log.e("MainActivity", "scaledDensity " + getResources().getDisplayMetrics().scaledDensity);
+        Log.e("MainActivity", "widthPixels " + getResources().getDisplayMetrics().widthPixels);
+        Log.e("MainActivity", "heightPixels " + getResources().getDisplayMetrics().heightPixels);
+        Log.e("MainActivity", "xdpi " + getResources().getDisplayMetrics().xdpi);
+        Log.e("MainActivity", "ydpi " + getResources().getDisplayMetrics().ydpi);
+        Log.e("MainActivity", "1dp " + getResources().getDimension(R.dimen.dp1));
+        Log.e("MainActivity", "dpi " + Math.sqrt(getResources().getDisplayMetrics().xdpi * getResources().getDisplayMetrics().xdpi
+                + getResources().getDisplayMetrics().ydpi * getResources().getDisplayMetrics().ydpi));
+
+        WindowManager windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        Log.e("MainActivity", "mWidth " + windowManager.getDefaultDisplay().getWidth());
+        Log.e("MainActivity", "mHeight " + windowManager.getDefaultDisplay().getHeight());
+
+
+        createDefaultDimens(750);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            ImageView imageView = findViewById(R.id.iv_img);
+            Log.e("MainActivity", "imageView Width " + imageView.getWidth());
+            Log.e("MainActivity", "imageView Height " + imageView.getHeight());
+        }
     }
 
     private void createDefaultDimens(float targetWidth) {
